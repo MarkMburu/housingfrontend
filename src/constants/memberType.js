@@ -1,0 +1,7 @@
+export const MemberTypes = {
+    ADD_MEMBER:"ADD_MEMBER",
+    UPDATE_MEMBER:"UPDATE_MEMBER",
+    GET_MEMBERS:"GET_MEMBERS",
+    DELETE_MEMBER:"DELETE_MEMBER"
+
+}

@@ -1,0 +1,6 @@
+export const PlotTypes = {
+  ADD_PLOT: "ADD_PLOT",
+  UPDATE_PLOT: "UPDATE_PLOT",
+  GET_PLOTS: "GET_PLOTS",
+  DELETE_PLOT: "DELETE_PLOT",
+};
