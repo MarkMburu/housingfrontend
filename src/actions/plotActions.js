@@ -8,7 +8,7 @@ export const PlotActions = {
       const response = await plotService.insertPlot(values);
       console.log("response in Plot actions", response);
       dispatch({
-        type: PlotTypes.ADD_Plot,
+        type: PlotTypes.ADD_PPLOT,
         payload: response,
       });
     } catch (error) {
@@ -23,7 +23,7 @@ export const PlotActions = {
       const response = await plotService.getPlot();
       console.log("response from getPlots Plot actions", response);
       dispatch({
-        type: PlotTypes.GET_Plot,
+        type: PlotTypes.GET_PLOTS,
         payload: response,
       });
     } catch (error) {
@@ -39,7 +39,7 @@ export const PlotActions = {
       const response = await plotService.updatePlot(values);
       console.log("response after update", response);
       dispatch({
-        type: PlotTypes.UPDATE_Plot,
+        type: PlotTypes.UPDATE_PLOT,
         payload: response,
       });
     } catch (error) {
@@ -54,7 +54,7 @@ export const PlotActions = {
       const response = await plotService.deletePlot(id);
       console.log("response after update", response);
       dispatch({
-        type: PlotTypes.DELETE_Plot,
+        type: PlotTypes.DELETE_PLOT,
         payload: response,
       });
     } catch (error) {

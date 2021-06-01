@@ -121,7 +121,7 @@ function getStepContent(step,id) {
     case 0:
       return <Phase id={id}/>;
     case 1:
-      return <Plot />;
+      return <Plot id={id} />;
     case 2:
       return "Member Details";
     default:

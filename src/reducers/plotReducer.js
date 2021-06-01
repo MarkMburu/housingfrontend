@@ -7,8 +7,8 @@ const initialState = {
 const plotReducer = (state = initialState, action) => {
   switch (action.type) {
     case PlotTypes.ADD_PLOT:
-      return { ...state, plots: action.payload };
-    case PlotTypes.GET_PLOT:
+      return {plots: action.payload };
+    case PlotTypes.GET_PLOTS:
       console.log("reducer", action.payload);
       return { plots: action.payload };
     case PlotTypes.UPDATE_PLOT:

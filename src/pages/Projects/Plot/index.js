@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const headCells = [
-  { id: "fullname", label: "FullName" },
-  { id: "Phone", label: "Phone" },
-  { id: "national Id", label: "National ID" },
-  { id: "Allocation", label: "Allocation" },
+  { id: "plotnumber", label: "PlotNumber" },
+  { id: "size", label: "Size" },
+  { id: "Price", label: "Price" },
+  { id: "Sold", label: "Sold" },
   { id: "updatedat", label: "updated _at" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
@@ -168,17 +168,13 @@ function Plot(props) {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow key={item._id}>
+                  <TableRow key={item.id}>
                     <TableCell>
-                      {item.firstname +
-                        " " +
-                        item.middlename +
-                        " " +
-                        item.surname}
+                      {item.plotnumber}
                     </TableCell>
-                    <TableCell>{item.contact}</TableCell>
-                    <TableCell>{item.nationalid}</TableCell>
-                    <TableCell>{item.allocation}%</TableCell>
+                    <TableCell>{item.size} Acres</TableCell>
+                    <TableCell>{item.price}</TableCell>
+                    <TableCell>{item.sold ? "SOld": "On Sale"} </TableCell>
                     <TableCell>
                       {new Date(item.updated_at).toLocaleDateString()}
                     </TableCell>
@@ -226,7 +222,7 @@ function Plot(props) {
         <PlotForm
           addOrEdit={addOrEdit}
           recordForEdit={recordForEdit}
-          memberId={id}
+          projectId={id}
         />
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />

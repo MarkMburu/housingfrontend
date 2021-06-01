@@ -7,6 +7,8 @@ import Button from "./Button";
 import ActionButton from "./ActionButton";
 import UnitSelect from "./unitSelect"
 import MaterialSelect from "./MaterialSelect"
+import PhaseSelect from "./PhaseSelect"
+import PlotSelect from "./PlotSelect";
 export const Controls ={
    Input,
    RadioGroup,
@@ -16,5 +18,7 @@ export const Controls ={
    Button,
    ActionButton,
    UnitSelect,
-   MaterialSelect
+   MaterialSelect,
+   PhaseSelect,
+   PlotSelect
 }

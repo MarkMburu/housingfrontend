@@ -56,7 +56,11 @@ function ProjectForm(props) {
   };
   const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFvalues, true, validate);
-
+    const member = values.creditorId !== "" ?  members.find(member => member.id === values.creditorId) : ""
+    values.name = member.name || "";
+    values.nationalid = member.nationalid||"";
+    values.accountnumber = member.accountnumber||"";
+    values.address = member.estate || "";
   useEffect(() => {
     dispatch(MemberActions.getMembers());
     if (recordForEdit !== null)
@@ -118,7 +122,7 @@ function ProjectForm(props) {
           <Controls.UnitSelect
             name="creditorId"
             label="FullName"
-            value={values.creditorid}
+            value={values.creditorId}
             onChange={handleInputChange}
             options={members}
             key={members.id}

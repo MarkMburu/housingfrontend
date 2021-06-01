@@ -2,9 +2,20 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "../../../components/useForm";
 import { Grid, Typography } from "@material-ui/core";
 import { Controls } from "../../../components/controls/Controls";
-
+import {useSelector,useDispatch} from "react-redux";
+import {MemberActions} from "../../../actions/memberActions";
+import {PhaseActions} from "../../../actions/phaseActions";
+import {ProjectsActions} from "../../../actions/projectsActions";
+import {PlotActions} from "../../../actions/plotActions";
 const initialFvalues = {
-  phasename: "",
+  memberid: "",
+  name:"",
+  nationalid:"",
+  phaseid:"",
+  projectname:"",
+  location:"",
+  amount:"",
+  account:null,
   size: null,
   numberofplots: "",
   costprice: null,
@@ -15,6 +26,14 @@ const initialFvalues = {
 function PlotSaleForm(props) {
   const { addOrEdit, recordForEdit } = props;
   const { projectId } = props;
+  const memberList = useSelector(state => state.members.members);
+  const phase = useSelector(state => state.phase.phase)
+  const projects = useSelector(state => state.projects.projects);
+  const plots = useSelector((state) => state.plots.plots);
+
+  console.log("phase",phase);
+  console.log("projects",projects)
+  const dispatch = useDispatch()
   const validate = (fieldvalues = values) => {
     let temp = { ...errors };
     if ("firstname" in fieldvalues) {
@@ -33,8 +52,22 @@ function PlotSaleForm(props) {
   };
   const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFvalues, true, validate);
-
+    const selectedphase = phase && values.phaseid !== "" ? phase.find(p => p.id === values.phaseid) : "";
+    const member = memberList && values.memberid !== "" ?  memberList.find(member => member.id === values.memberid) : "";
+    const project = selectedphase && projects ?  projects.find(project => project.id === selectedphase.projectId) : "";
+    const selectedplots = plots && plots.length > 0 && values.phaseid !== "" ? plots.filter(plot => plot.phaseid === values.phaseid && phase.sold === false) : []; 
+    values.name = member.name || "";
+    values.nationalid = member.nationalid||"";
+    values.account = member.accountnumber||"";
+    values.projectname = project.projectname ||"";
+    values.location = project.location ||"";
+    values.amount = project.amount ||"";
+    console.log("Plots",selectedplots)
   useEffect(() => {
+    dispatch(MemberActions.getMembers());
+    dispatch(PhaseActions.getPhase());
+    dispatch(ProjectsActions.getProjects());
+    dispatch(PlotActions.getPlot());
     if (recordForEdit !== null)
       setValues({
         ...recordForEdit,
@@ -52,34 +85,45 @@ function PlotSaleForm(props) {
     <Form onSubmit={handleSubmit}>
       <Grid container>
         <Grid item xs={6}>
+          <Controls.UnitSelect
+            name="memberid"
+            label="Select Member"
+            value={values.memberid}
+            onChange={handleInputChange}
+            options={memberList}
+            key={memberList.id}
+            error={errors._id}
+          />
+
           <Controls.Input
-            label="Phase Name"
-            name="phasename"
-            value={values.phasename}
+            label="Id"
+            name="nationalid"
+            value={values.nationalid}
             onChange={handleInputChange}
             error={errors.firstname}
           />
+          <Controls.PhaseSelect
+            name="phaseid"
+            label="Choose Phase"
+            value={values.phaseid}
+            onChange={handleInputChange}
+            options={phase}
+            key={phase.id}
+            error={errors._id}
+          />
           <Controls.Input
-            label="Receipt Description(Purchase)"
-            name="purchase"
-            value={"Purchase Of"}
+            label="No. Plots"
+            name="numberofplots"
+            value={values.location}
             onChange={handleInputChange}
             error={errors.firstname}
           />
 
           <Controls.Input
-            label="No. Plots"
-            name="numberofplots"
-            type="number"
-            value={values.numberofplots}
-            onChange={handleInputChange}
-            error={errors.firstname}
-          />
-          <Controls.Input
             label="Price"
-            name="price"
+            name="amount"
             type="number"
-            value={values.costprice / values.installments}
+            value={values.amount}
             onChange={handleInputChange}
             error={errors.firstname}
           />
@@ -87,33 +131,32 @@ function PlotSaleForm(props) {
 
         <Grid item xs={6}>
           <Controls.Input
-            label="Size(Acres)"
-            name="size"
-            type="number"
-            value={values.size}
+            label="Name"
+            name="name"
+            value={values.name}
             onChange={handleInputChange}
             error={errors.firstname}
           />
          <Controls.Input
-            label="Receipt Description(Installment)"
-            name="installment"
-            value={values.purchase || "Installment Payment of "}
+            label="Account"
+            name="account"
+            value={values.account}
             onChange={handleInputChange}
             error={errors.firstname}
           />
            <Controls.Input
-            label="Cost Price(per Plot)"
-            name="costprice"
-            type="number"
-            value={values.costprice}
+            label="Project Name"
+            name="projectname"
+            value={values.projectname}
             onChange={handleInputChange}
             error={errors.firstname}
           />
-           <Controls.Input
-            label="Installments"
-            name="installments"
-            type="number"
-            value={values.installments}
+           <Controls.PlotSelect
+            label="Plot"
+            name="plotid"
+            value={values.plotid}
+            options={selectedplots}
+            key={selectedplots.id}
             onChange={handleInputChange}
             error={errors.firstname}
           />

@@ -2,47 +2,26 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "../../../components/useForm";
 import { Grid, Typography } from "@material-ui/core";
 import { Controls } from "../../../components/controls/Controls";
-
-const genderItems = [
-  { id: "male", title: "Male" },
-  { id: "Female", title: "Female" },
-];
-const maritalStatusItems = [
-  { id: "single", title: "Single" },
-  { id: "Married", title: "Married" },
-];
-
-const accounts = [
-  { id: "Personal Account", title: "Personal Account" },
-  { id: "Joint Account", title: "Joint Account" },
-  { id: "Company Organization", title: "Company Organization" },
-  { id: "Registered Groups", title: "Registered Groups" },
-];
+import {useSelector,useDispatch} from "react-redux";
+import {PhaseActions } from "../../../actions/phaseActions";
 
 const initialFvalues = {
-  firstname: "",
-  middlename: "",
-  surname: "",
-  nationalid: "",
-  email: "",
-  contact: "",
-  allocation: "",
+  phaseId:"",
+  totalplots: null,
+  size: null,
+  price: null,
+  phasename:"",
+
 };
 
-const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-
-// a and b are javascript Date objects
-function dateDiffInDays(a, b) {
-  // Discard the time and time-zone information.
-  const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-  const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
-  return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-}
 
 function PlotForm(props) {
   const { addOrEdit, recordForEdit } = props;
-  const { memberId } = props;
+  const {projectId} = props;
+
+  const dispatch = useDispatch();
+  const phase = useSelector(state => state.phase.phase);
+
   const validate = (fieldvalues = values) => {
     let temp = { ...errors };
     if ("firstname" in fieldvalues) {
@@ -61,8 +40,12 @@ function PlotForm(props) {
   };
   const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFvalues, true, validate);
-
+    const newPhase = phase && phase.length > 0 ? phase.filter(phase => phase.projectId === projectId): "";
+    const selectedPhase = newPhase && newPhase.length > 0 && values.phaseId !== 0 ? newPhase.find(phase => phase.id === values.phaseId) : "";
+    console.log("selectedphase.../",selectedPhase)
+    values.phasename =  selectedPhase ? selectedPhase.phasename : " ";
   useEffect(() => {
+    dispatch(PhaseActions.getPhase());
     if (recordForEdit !== null)
       setValues({
         ...recordForEdit,
@@ -72,33 +55,28 @@ function PlotForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log({ ...values, memberId }, "values");
-      addOrEdit({ ...values, memberId }, resetForm);
+      console.log({ ...values, projectId }, "values");
+      addOrEdit({ ...values, projectId }, resetForm);
     }
   };
   return (
     <Form onSubmit={handleSubmit}>
       <Grid container>
         <Grid item xs={6}>
-          <Controls.Input
-            label="SurName"
-            name="surname"
-            value={values.surname}
+          <Controls.PhaseSelect
+            label="Phase"
+            name="phaseId"
+            value={values.phaseId}
+            options={newPhase}
+            key={newPhase.id}
             onChange={handleInputChange}
             error={errors.firstname}
           />
           <Controls.Input
-            label="MiddleName"
-            name="middlename"
-            value={values.middlename}
-            onChange={handleInputChange}
-            error={errors.firstname}
-          />
-
-          <Controls.Input
-            label="Contact"
-            name="contact"
-            value={values.contact}
+            label="price"
+            name="price"
+            type="number"
+            value={values.price}
             onChange={handleInputChange}
             error={errors.firstname}
           />
@@ -106,26 +84,21 @@ function PlotForm(props) {
 
         <Grid item xs={6}>
           <Controls.Input
-            label="First Name"
-            name="firstname"
-            value={values.firstname}
+            label="Size"
+            name="size"
+            type="number"
+            value={values.size}
             onChange={handleInputChange}
             error={errors.firstname}
-          />
-          <Controls.Input
-            label="National Id"
-            name="nationalid"
-            value={values.nationalid}
+    />
+       <Controls.Input
+            label="totalplots"
+            name="totalplots"
+            type="number"
+            value={values.totalplots}
             onChange={handleInputChange}
             error={errors.firstname}
-          />
-          <Controls.Input
-            label="Allocation"
-            name="allocation"
-            value={values.allocation}
-            onChange={handleInputChange}
-            error={errors.firstname}
-          />
+    />
         </Grid>
       </Grid>
 
