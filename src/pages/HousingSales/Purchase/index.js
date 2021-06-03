@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PageHeader from "../../../components/PageHeader";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import ProjectForm from "./ProjectForm";
+import PurchaseForm from "./PurchaseForm";
 import Popup from "../../../components/Popup";
 import AddIcon from "@material-ui/icons/Add";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { Controls } from "../../../components/controls/Controls";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
+import { Grid, Typography } from "@material-ui/core";
 import {
   Toolbar,
   Paper,
@@ -22,8 +23,8 @@ import Notification from "../../../components/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import { useSelector, useDispatch } from "react-redux";
 import LinearIndeterminate from "../../../components/LinearIndeterminate";
-import { ProjectsActions } from "../../../actions/projectsActions";
-import {withRouter} from "react-router-dom";
+import { PurchaseActions } from "../../../actions/purchaseActions";
+
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
@@ -38,21 +39,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const headCells = [
-  { id: "lronumber", label: "LRO NO:" },
-  { id: "projectname", label: "projectname" },
-  { id: "nationalid", label: "ID" },
-  { id: "amount", label: "Amount" },
-  { id: "updatedat", label: "updated _at" },
+  { id: "Purchasename", label: "Purchase Name" },
+  { id: "size", label: "Size" },
+  { id: "numberofplots", label: "No. Plots" },
+  { id: "costprice", label: "Cost Price" },
+  { id: "installments", label: "Installments" },
+  { id: "price", label: "price" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
 
-function ProjectList(props) {
-  const { history } = props;
-  console.log("history",history)
+function Purchase(props) {
+  const { id } = props;
   const classes = useStyles();
+  const purchases = useSelector((state) => state.purchases.purchases);
+ 
   const dispatch = useDispatch();
-  const projects = useSelector((state) => state.projects.projects);
-  console.log("Projects from you know", projects);
+  // const fetchedPurchase = Purchaseervices.getAllPurchase().then(data => data)
+  const [records, setRecords] = useState([]);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -71,20 +74,24 @@ function ProjectList(props) {
     title: "",
     subTitle: "",
   });
-  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(projects ? projects:[] , headCells, filterFn, isLoading);
-   
-   
-    useEffect(() => {
-      dispatch(ProjectsActions.getProjects());
-    }, [notify]);
 
-  const addOrEdit = (Project, resetForm) => {
-    if (Project.id) {
-      console.log(Project);
-      dispatch(ProjectsActions.updateProject(Project));
+  // check beneficiaries exist then filter per member id
+  
+  const newPurchase = purchases ? purchases.filter(  bn => bn.projectId === id ) : [];
+
+  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
+    useTable(newPurchase, headCells, filterFn, isLoading);
+
+  useEffect(() => {
+    dispatch(PurchaseActions.getPurchases());
+  }, [notify]);
+
+  const addOrEdit = (Purchase, resetForm) => {
+    if (Purchase.id) {
+      console.log(Purchase);
+      dispatch(PurchaseActions.updatePurchase(Purchase));
     } else {
-      dispatch(ProjectsActions.addProject(Project));
+      dispatch(PurchaseActions.addPurchase(Purchase));
     }
 
     resetForm();
@@ -104,7 +111,7 @@ function ProjectList(props) {
         if (target.value === "") return items;
         else
           return items.filter((x) =>
-            x.projectname.toLowerCase().includes(target.value.toLowerCase())
+            x.firstname.toLowerCase().includes(target.value.toLowerCase())
           );
       },
     });
@@ -120,7 +127,7 @@ function ProjectList(props) {
       isOpen: false,
     });
     console.log("delete");
-    dispatch(ProjectsActions.deleteProject(id));
+    dispatch(PurchaseActions.deletePurchase(id));
     setNotify({
       isOpen: true,
       message: "Deleted Successfully",
@@ -130,11 +137,10 @@ function ProjectList(props) {
 
   return (
     <>
-    <PageHeader title="Land Projects" subtitle="Land Projects List" icon={<FormatListBulletedIcon/>}/> 
       <Paper className={classes.pageContent}>
         <Toolbar>
           <Controls.Input
-            label="Search Projects"
+            label="Search Purchases"
             className={classes.searchInput}
             InputProps={{
               startAdornment: (
@@ -145,8 +151,9 @@ function ProjectList(props) {
             }}
             onChange={handleSearch}
           />
+
           <Controls.Button
-            text="Add Land Project"
+            text="New Sale"
             variant="outlined"
             startIcon={<AddIcon />}
             className={classes.newButton}
@@ -156,38 +163,21 @@ function ProjectList(props) {
             }}
           />
         </Toolbar>
-        {projects&&projects.length>0 ? (
+        {purchases && purchases.length > 0 ? (
           <div>
             <TblContainer>
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell
-                      onClick={() => history.push("/projects/"+item.id)}
-                    >
-                      {item.lronumber}
+                  <TableRow key={item._id}>
+                    <TableCell>
+                      {item.Purchasename}
                     </TableCell>
-                    <TableCell
-                      onClick={() => history.push("/projects/"+item.id)}
-                    >
-                      {item.projectname}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => history.push("/projects/"+ item.id)}
-                    >
-                      {item.nationalid}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => history.push("/projects/"+item.id)}
-                    >
-                      {item.amount}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => history.push("/projects/"+item.id)}
-                    >
-                      {new Date(item.updated_at).toLocaleDateString()}
-                    </TableCell>
+                    <TableCell>{item.size +" Acres"}</TableCell>
+                    <TableCell>{item.numberofplots}</TableCell>
+                    <TableCell>{item.costprice}</TableCell>
+                    <TableCell>{item.installments}</TableCell>
+                    <TableCell>{item.costprice / item.installments}</TableCell>
                     <TableCell>
                       <Controls.ActionButton
                         color="primary"
@@ -202,7 +192,7 @@ function ProjectList(props) {
                         onClick={() => {
                           setConfirmDialog({
                             isOpen: true,
-                            title: "You are about to delete this project",
+                            title: "You are about to delete this Purchase",
                             subTitle: "You cant reverse this process",
                             onConfirm: () => {
                               onDelete(item.id);
@@ -227,11 +217,12 @@ function ProjectList(props) {
       <Popup
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
-        title="Project Form"
+        title="New Sale Form"
       >
-        <ProjectForm
+        <PurchaseForm
           addOrEdit={addOrEdit}
           recordForEdit={recordForEdit}
+          projectId={id}
         />
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />
@@ -243,4 +234,4 @@ function ProjectList(props) {
   );
 }
 
-export default withRouter(ProjectList);
+export default Purchase;

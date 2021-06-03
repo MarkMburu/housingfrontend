@@ -11,7 +11,9 @@ import ProjectList from "./pages/Projects/ProjectsList";
 import ProjectDetails from "./pages/Projects/ProjectDetails";
 import Sale from "./pages/Sales";
 import Receipt from "./pages/Receipts";
-
+import HousingList from "./pages/Housing/HousingList";
+import HousingDetails from "./pages/Housing/HousingDetails";
+import HousingSale from "./pages/HousingSales"
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -73,6 +75,9 @@ function App() {
                   <Route path="/projects/:id" component={ProjectDetails} exact />
                   <Route path="/transactions" component={Receipt} exact/>
                   <Route path="/sales" component={Sale} exact/>
+                  <Route path="/housing" component={HousingList} exact/>
+                  <Route path="/housing/:id" component={HousingDetails} exact/>
+                  <Route path="/housingsales" component={HousingSale} exact />
                 </div>
               </Switch>
             </Router>

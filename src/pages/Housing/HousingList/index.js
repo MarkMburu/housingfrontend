@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PageHeader from "../../../components/PageHeader";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import ProjectForm from "./ProjectForm";
+import HousingForm from "./HousingForm";
 import Popup from "../../../components/Popup";
 import AddIcon from "@material-ui/icons/Add";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
@@ -22,8 +22,9 @@ import Notification from "../../../components/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import { useSelector, useDispatch } from "react-redux";
 import LinearIndeterminate from "../../../components/LinearIndeterminate";
-import { ProjectsActions } from "../../../actions/projectsActions";
+import { HousingActions } from "../../../actions/housingActions";
 import {withRouter} from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
@@ -38,21 +39,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const headCells = [
-  { id: "lronumber", label: "LRO NO:" },
-  { id: "projectname", label: "projectname" },
-  { id: "nationalid", label: "ID" },
-  { id: "amount", label: "Amount" },
+  { id: "Projectname", label: "Project Name" },
+  { id: "projectnumber", label: "Project Number" },
+  { id: "Number Of Units", label: "Number Of Units" },
+  { id: "location", label: "Location" },
   { id: "updatedat", label: "updated _at" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
 
-function ProjectList(props) {
+function HousingList(props) {
   const { history } = props;
   console.log("history",history)
   const classes = useStyles();
   const dispatch = useDispatch();
-  const projects = useSelector((state) => state.projects.projects);
-  console.log("Projects from you know", projects);
+  const Housings = useSelector((state) => state.houses.houses);
+  console.log("Housings from you know", Housings);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -72,19 +73,19 @@ function ProjectList(props) {
     subTitle: "",
   });
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(projects ? projects:[] , headCells, filterFn, isLoading);
+    useTable(Housings ? Housings:[] , headCells, filterFn, isLoading);
    
    
     useEffect(() => {
-      dispatch(ProjectsActions.getProjects());
+      dispatch(HousingActions.getHouseProjects());
     }, [notify]);
 
-  const addOrEdit = (Project, resetForm) => {
-    if (Project.id) {
-      console.log(Project);
-      dispatch(ProjectsActions.updateProject(Project));
+  const addOrEdit = (Housing, resetForm) => {
+    if (Housing.id) {
+      console.log(Housing);
+      dispatch(HousingActions.updateHouseProject(Housing));
     } else {
-      dispatch(ProjectsActions.addProject(Project));
+      dispatch(HousingActions.addHouseProject(Housing));
     }
 
     resetForm();
@@ -104,7 +105,7 @@ function ProjectList(props) {
         if (target.value === "") return items;
         else
           return items.filter((x) =>
-            x.projectname.toLowerCase().includes(target.value.toLowerCase())
+            x.Housingname.toLowerCase().includes(target.value.toLowerCase())
           );
       },
     });
@@ -120,7 +121,7 @@ function ProjectList(props) {
       isOpen: false,
     });
     console.log("delete");
-    dispatch(ProjectsActions.deleteProject(id));
+    dispatch(HousingActions.deleteHouseProject(id));
     setNotify({
       isOpen: true,
       message: "Deleted Successfully",
@@ -130,11 +131,11 @@ function ProjectList(props) {
 
   return (
     <>
-    <PageHeader title="Land Projects" subtitle="Land Projects List" icon={<FormatListBulletedIcon/>}/> 
+    <PageHeader title="Housings Projects" subtitle="Housings Projects List" icon={<FormatListBulletedIcon/>}/> 
       <Paper className={classes.pageContent}>
         <Toolbar>
           <Controls.Input
-            label="Search Projects"
+            label="Search Housings"
             className={classes.searchInput}
             InputProps={{
               startAdornment: (
@@ -146,7 +147,7 @@ function ProjectList(props) {
             onChange={handleSearch}
           />
           <Controls.Button
-            text="Add Land Project"
+            text="Add Housing Project"
             variant="outlined"
             startIcon={<AddIcon />}
             className={classes.newButton}
@@ -156,7 +157,7 @@ function ProjectList(props) {
             }}
           />
         </Toolbar>
-        {projects&&projects.length>0 ? (
+        {Housings&&Housings.length>0 ? (
           <div>
             <TblContainer>
               <TblHead />
@@ -164,27 +165,27 @@ function ProjectList(props) {
                 {recordsAfterPagingAndSorting().map((item) => (
                   <TableRow key={item.id}>
                     <TableCell
-                      onClick={() => history.push("/projects/"+item.id)}
-                    >
-                      {item.lronumber}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => history.push("/projects/"+item.id)}
+                      onClick={() => history.push("/housing/"+item.id)}
                     >
                       {item.projectname}
                     </TableCell>
                     <TableCell
-                      onClick={() => history.push("/projects/"+ item.id)}
+                      onClick={() => history.push("/housing/"+item.id)}
                     >
-                      {item.nationalid}
+                      {item.projectnumber}
                     </TableCell>
                     <TableCell
-                      onClick={() => history.push("/projects/"+item.id)}
+                      onClick={() => history.push("/housing/"+ item.id)}
                     >
-                      {item.amount}
+                      {item.numberofunits}
                     </TableCell>
                     <TableCell
-                      onClick={() => history.push("/projects/"+item.id)}
+                      onClick={() => history.push("/housing/"+item.id)}
+                    >
+                      {item.location}
+                    </TableCell>
+                    <TableCell
+                      onClick={() => history.push("/housing/"+item.id)}
                     >
                       {new Date(item.updated_at).toLocaleDateString()}
                     </TableCell>
@@ -202,7 +203,7 @@ function ProjectList(props) {
                         onClick={() => {
                           setConfirmDialog({
                             isOpen: true,
-                            title: "You are about to delete this project",
+                            title: "You are about to delete this Housing",
                             subTitle: "You cant reverse this process",
                             onConfirm: () => {
                               onDelete(item.id);
@@ -227,9 +228,9 @@ function ProjectList(props) {
       <Popup
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
-        title="Project Form"
+        title="Housing Form"
       >
-        <ProjectForm
+        <HousingForm
           addOrEdit={addOrEdit}
           recordForEdit={recordForEdit}
         />
@@ -243,4 +244,4 @@ function ProjectList(props) {
   );
 }
 
-export default withRouter(ProjectList);
+export default withRouter(HousingList);

@@ -1,0 +1,7 @@
+export const HouseTypes = {
+    ADD_HOUSE:"ADD_HOUSE",
+    UPDATE_HOUSE:"UPDATE_HOUSE",
+    GET_HOUSES:"GET_HOUSES",
+    DELETE_HOUSE:"DELETE_HOUSE"
+
+}

@@ -135,24 +135,24 @@ function PermanentDrawerLeft(props) {
       onClick: () => history.push("/transactions"),
     },
     {
-      text: "Project Module",
+      text: "Lands",
       icon: <GroupIcon color='primary' fontSize='large'/>,
       onClick: () => history.push("/projects"),
     },
     {
-      text: "Sales",
+      text: "Lands Sales",
       icon: <ReceiptIcon color='primary' fontSize='large'/>,
       onClick: () => history.push("/sales"),
     },
     {
-      text: "Accounting Management",
+      text: "Housing",
       icon: <AccountBalanceIcon color='primary' fontSize='large'/>,
-      onClick: () => history.push("/accounts"),
+      onClick: () => history.push("/housing"),
     },
     {
-      text: "Staff",
+      text: "Housing Sales",
       icon: <PeopleIcon color='primary' fontSize='large'/>,
-      onClick: () => history.push("/staff"),
+      onClick: () => history.push("/housingsales"),
     },
   ];
   const itemList2 = [

@@ -15,6 +15,7 @@ import { Search } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 import LinearIndeterminate from "../../components/LinearIndeterminate";
 import { receiptActions  } from "../../actions/receiptActions";
+import {HousingActions } from"../../actions/housingActions";
 import {withRouter} from "react-router-dom";
 import SortIcon from '@material-ui/icons/Sort';
 import ReceiptIcon from '@material-ui/icons/Receipt';
@@ -47,6 +48,7 @@ function Receipt(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const receipts = useSelector((state) => state.receipts.receipts);
+  const houses = useSelector((state)=> state.houses.houses);
   console.log("receipts from you know", receipts);
 
   const [notify, setNotify] = useState({
@@ -73,6 +75,7 @@ function Receipt(props) {
    
     useEffect(() => {
       dispatch(receiptActions .getReceipts());
+   
     }, [notify]);
 
   const addOrEdit = (member, resetForm) => {
@@ -105,7 +108,12 @@ function Receipt(props) {
       },
     });
   };
+const getProjectName =(id)=>{
+ const project = houses.find(project => project.id === id);
+ console.log(id)
+ return project.projectname
 
+}
   const openInPopUp = (item) => {
     setRecordForEdit(item);
     setOpenPopup(true);
@@ -173,7 +181,7 @@ function Receipt(props) {
                     </TableCell>
                     <TableCell
                     >
-                      {item.narration + " for " + item.name }
+                      {item.entrytype ==="EF" ? item.narration  + " for " + item.name : item.narration + " for " + item.description}
                     </TableCell>
                     <TableCell
                     >

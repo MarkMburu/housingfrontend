@@ -9,6 +9,8 @@ import UnitSelect from "./unitSelect"
 import MaterialSelect from "./MaterialSelect"
 import PhaseSelect from "./PhaseSelect"
 import PlotSelect from "./PlotSelect";
+import HouseSelect from "./HouseSelect";
+import FloorSelect from "./FloorSelect";
 export const Controls ={
    Input,
    RadioGroup,
@@ -20,5 +22,7 @@ export const Controls ={
    UnitSelect,
    MaterialSelect,
    PhaseSelect,
-   PlotSelect
+   PlotSelect,
+   HouseSelect,
+   FloorSelect
 }
