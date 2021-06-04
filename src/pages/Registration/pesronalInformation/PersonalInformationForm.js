@@ -44,17 +44,6 @@ const initialFvalues = {
   branch: "",
 };
 
-const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-
-// a and b are javascript Date objects
-function dateDiffInDays(a, b) {
-  // Discard the time and time-zone information.
-  const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-  const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
-  return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-}
-
 function PersonalInformationForm(props) {
   const { addOrEdit, recordForEdit } = props;
 
@@ -63,10 +52,36 @@ function PersonalInformationForm(props) {
     if ("firstname" in fieldvalues) {
       temp.firstname = fieldvalues.firstname ? "" : "This Field is required";
     }
-    if ("projectNumber" in fieldvalues)
-      temp.projectNumber = fieldvalues.projectNumber ? "" : "Enter a Number";
-    if ("numberOfUnits" in fieldvalues)
-      temp.numberOfUnits = fieldvalues.numberOfUnits ? "" : "Enter a Number";
+    if ("middlename" in fieldvalues) {
+      temp.middlename = fieldvalues.middlename ? "" : "This Field is required";
+    }
+    if ("surname" in fieldvalues) {
+      temp.surname = fieldvalues.surname ? "" : "This Field is required";
+    }
+    if ("accountnumber" in fieldvalues) {
+      temp.accountnumber = fieldvalues.accountnumber
+        ? ""
+        : "This Field is required";
+    }
+    if ("nationalid" in fieldvalues) {
+      temp.nationalid = fieldvalues.nationalid ? "" : "This Field is required";
+    }
+    if ("krapin" in fieldvalues) {
+      temp.krapin = fieldvalues.krapin ? "" : "This Field is required";
+    }
+
+    if ("contact" in fieldvalues)
+      temp.contact = fieldvalues.contact ? "" : "This Field is required";
+    if ("email" in fieldvalues)
+      temp.email = fieldvalues.email ? "" : "This Field is required";
+    if ("country" in fieldvalues)
+      temp.country = fieldvalues.country ? "" : "This Field is required";
+    if ("accounttype" in fieldvalues)
+      temp.accounttype = fieldvalues.accounttype
+        ? ""
+        : "This Field is required";
+    if ("branch" in fieldvalues)
+      temp.branch = fieldvalues.branch ? "" : "This Field is required";
 
     setErrors({
       ...temp,
@@ -89,7 +104,6 @@ function PersonalInformationForm(props) {
     if (validate()) {
       let name =
         values.firstname + " " + values.middlename + " " + values.surname;
-      console.log({ ...values, name }, "values");
       addOrEdit({ ...values, name }, resetForm);
     }
   };
@@ -104,14 +118,14 @@ function PersonalInformationForm(props) {
             onChange={handleInputChange}
             options={accounts}
             key={accounts.title}
-            error={errors._id}
+            error={errors.accounttype}
           />
           <Controls.Input
             label="MiddleName"
             name="middlename"
             value={values.middlename}
             onChange={handleInputChange}
-            error={errors.firstname}
+            error={errors.middlename}
           />
           <Controls.RadioGroup
             label="Gender"
@@ -126,12 +140,12 @@ function PersonalInformationForm(props) {
             name="nationalid"
             value={values.nationalid}
             onChange={handleInputChange}
-            error={errors.firstname}
+            error={errors.nationalid}
           />
           <Controls.DatePickers
             name="dateofbirth"
             label="Date Of Birth"
-            value={values.from}
+            value={values.dateofbirth}
             onChange={handleInputChange}
           />
           <Controls.Input
@@ -139,7 +153,6 @@ function PersonalInformationForm(props) {
             name="alternativecontact"
             value={values.alternativecontact}
             onChange={handleInputChange}
-            error={errors.firstname}
           />
         </Grid>
 
@@ -149,14 +162,14 @@ function PersonalInformationForm(props) {
             name="accountnumber"
             value={values.accountnumber}
             onChange={handleInputChange}
-            error={errors.firstname}
+            error={errors.accountnumber}
           />
           <Controls.Input
             label="Surname"
             name="surname"
             value={values.surname}
             onChange={handleInputChange}
-            error={errors.firstname}
+            error={errors.surname}
           />
           <Controls.RadioGroup
             label="Marital Status"
@@ -171,7 +184,7 @@ function PersonalInformationForm(props) {
             name="krapin"
             value={values.krapin}
             onChange={handleInputChange}
-            error={errors.firstname}
+            error={errors.krapin}
           />
 
           <Controls.Input
@@ -179,14 +192,12 @@ function PersonalInformationForm(props) {
             name="estate"
             value={values.estate}
             onChange={handleInputChange}
-            error={errors.firstname}
           />
           <Controls.Input
             label="Agent Name"
             name="agentname"
             value={values.agentname}
             onChange={handleInputChange}
-            error={errors.firstname}
           />
         </Grid>
         <Grid item xs={4}>
@@ -203,21 +214,21 @@ function PersonalInformationForm(props) {
             name="country"
             value={values.country}
             onChange={handleInputChange}
-            error={errors.firstname}
+            error={errors.country}
           />
           <Controls.Input
             label="Email"
             name="email"
             value={values.email}
             onChange={handleInputChange}
-            error={errors.firstname}
+            error={errors.email}
           />
           <Controls.Input
             label="Contact"
             name="contact"
             value={values.contact}
             onChange={handleInputChange}
-            error={errors.firstname}
+            error={errors.contact}
           />
           <Controls.Select
             name="branch"
@@ -226,7 +237,7 @@ function PersonalInformationForm(props) {
             onChange={handleInputChange}
             options={branchList}
             key={branchList.title}
-            error={errors._id}
+            error={errors.branch}
           />
         </Grid>
       </Grid>
