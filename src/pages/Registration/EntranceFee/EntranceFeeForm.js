@@ -105,7 +105,7 @@ function EntranceFeeForm(props) {
           <Controls.Select
             name="bankname"
             label="a/cdebit"
-            value={values.title}
+            value={values.bankname}
             onChange={handleInputChange}
             options={accountDebits}
             key={accountDebits.id}

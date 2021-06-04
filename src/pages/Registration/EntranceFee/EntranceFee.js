@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const headCells = [
   { id: "rctno", label: "Rcpt No:" },
-  { id: "Name", label: "Full Name" },
+  { id: "acDebit", label: "AC/Debit" },
   { id: "amount", label: "Amount" },
   { id: "balance", label: "Balance" },
   { id: "updatedat", label: "updated _at" },
@@ -74,7 +74,7 @@ function EntranceFee(props) {
     subTitle: "",
   });
   const memberReceipt = receipts ? receipts.filter(receipt => receipt.memberId === id) : [];
-
+  console.log("member Receipt", memberReceipt)
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(memberReceipt, headCells, filterFn, isLoading);
 
@@ -159,14 +159,16 @@ function EntranceFee(props) {
             }}
           />
         </Toolbar>
-        {memberReceipt && memberReceipt > 0 ? (
+        {memberReceipt && memberReceipt.length > 0 ? (
           <div>
             <TblContainer>
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
+               
                   <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
+                      <TableCell>{item.rcptno}</TableCell>
+                    <TableCell>{item.bankname}</TableCell>
                     <TableCell>{item.amount}</TableCell>
                     <TableCell>{item.balance}</TableCell>
                     <TableCell>
