@@ -132,11 +132,11 @@ function MemberList(props) {
 
   return (
     <>
-    <PageHeader title="Members" subtitle="Members List" icon={<GroupAddIcon/>}/> 
+    <PageHeader title="Investors" subtitle="Investor List" icon={<GroupAddIcon/>}/> 
       <Paper className={classes.pageContent}>
         <Toolbar>
           <Controls.Input
-            label="Search Members"
+            label="Search Investor"
             className={classes.searchInput}
             InputProps={{
               startAdornment: (
@@ -148,7 +148,7 @@ function MemberList(props) {
             onChange={handleSearch}
           />
           <Controls.Button
-            text="Add Member"
+            text="Add Investor"
             variant="outlined"
             startIcon={<AddIcon />}
             className={classes.newButton}
@@ -205,7 +205,7 @@ function MemberList(props) {
                         onClick={() => {
                           setConfirmDialog({
                             isOpen: true,
-                            title: "You are about to delete this MemberList",
+                            title: "You are about to delete this Investor",
                             subTitle: "You cant reverse this process",
                             onConfirm: () => {
                               onDelete(item.id);
@@ -230,7 +230,7 @@ function MemberList(props) {
       <Popup
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
-        title="Member Form"
+        title="Investor Form"
       >
         <PersonalInformationForm
           addOrEdit={addOrEdit}

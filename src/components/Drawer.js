@@ -125,7 +125,7 @@ function PermanentDrawerLeft(props) {
       onClick: () => history.push("/"),
     },
     {
-      text: "Members",
+      text: "Investors",
       icon: <GroupAddIcon color='primary' fontSize='large'/>,
       onClick: () => history.push("/members"),
     },
