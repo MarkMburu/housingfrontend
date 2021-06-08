@@ -14,11 +14,11 @@ import useTable from "../../components/useTable";
 import { Search } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 import LinearIndeterminate from "../../components/LinearIndeterminate";
-import { receiptActions  } from "../../actions/receiptActions";
-import {HousingActions } from"../../actions/housingActions";
-import {withRouter} from "react-router-dom";
-import SortIcon from '@material-ui/icons/Sort';
-import ReceiptIcon from '@material-ui/icons/Receipt';
+import { receiptActions } from "../../actions/receiptActions";
+import { HousingActions } from "../../actions/housingActions";
+import { withRouter } from "react-router-dom";
+import SortIcon from "@material-ui/icons/Sort";
+import ReceiptIcon from "@material-ui/icons/Receipt";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -39,16 +39,16 @@ const headCells = [
   { id: "amount", label: "Amount" },
   { id: "particulars", label: "Particulars" },
   { id: "E.T", label: "E.T" },
-  { id: "dateCaptured", label: "DateCaptured"},
+  { id: "dateCaptured", label: "DateCaptured" },
 ];
 
 function Receipt(props) {
   const { history } = props;
-  console.log("history",history)
+  console.log("history", history);
   const classes = useStyles();
   const dispatch = useDispatch();
   const receipts = useSelector((state) => state.receipts.receipts);
-  const houses = useSelector((state)=> state.houses.houses);
+  const houses = useSelector((state) => state.houses.houses);
   console.log("receipts from you know", receipts);
 
   const [notify, setNotify] = useState({
@@ -71,19 +71,17 @@ function Receipt(props) {
   });
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(receipts ? receipts : [], headCells, filterFn, isLoading);
-   
-   
-    useEffect(() => {
-      dispatch(receiptActions .getReceipts());
-   
-    }, [notify]);
+
+  useEffect(() => {
+    dispatch(receiptActions.getReceipts());
+  }, [notify]);
 
   const addOrEdit = (member, resetForm) => {
     if (member.id) {
       console.log(member);
-      dispatch(receiptActions .updateMember(member));
+      dispatch(receiptActions.updateMember(member));
     } else {
-      dispatch(receiptActions .addMember(member));
+      dispatch(receiptActions.addMember(member));
     }
 
     resetForm();
@@ -108,12 +106,11 @@ function Receipt(props) {
       },
     });
   };
-const getProjectName =(id)=>{
- const project = houses.find(project => project.id === id);
- console.log(id)
- return project.projectname
-
-}
+  const getProjectName = (id) => {
+    const project = houses.find((project) => project.id === id);
+    console.log(id);
+    return project.projectname;
+  };
   const openInPopUp = (item) => {
     setRecordForEdit(item);
     setOpenPopup(true);
@@ -124,7 +121,7 @@ const getProjectName =(id)=>{
       isOpen: false,
     });
     console.log("delete");
-    dispatch(receiptActions .deleteMember(id));
+    dispatch(receiptActions.deleteMember(id));
     setNotify({
       isOpen: true,
       message: "Deleted Successfully",
@@ -134,7 +131,11 @@ const getProjectName =(id)=>{
 
   return (
     <>
-    <PageHeader title="Receipts" subtitle="Receipt List" icon={<ReceiptIcon />}/> 
+      <PageHeader
+        title="Receipts"
+        subtitle="Receipt List"
+        icon={<ReceiptIcon />}
+      />
       <Paper className={classes.pageContent}>
         <Toolbar>
           <Controls.Input
@@ -160,7 +161,7 @@ const getProjectName =(id)=>{
             }}
           />
         </Toolbar>
-        {receipts&&receipts.length>0 ? (
+        {receipts && receipts.length > 0 ? (
           <div>
             <TblContainer>
               <TblHead />
@@ -168,28 +169,35 @@ const getProjectName =(id)=>{
                 {recordsAfterPagingAndSorting().map((item) => (
                   <TableRow key={item.id}>
                     <TableCell
+                      onClick={() => history.push("/transactions/" + item.id)}
                     >
                       {item.rcptno}
                     </TableCell>
                     <TableCell
+                      onClick={() => history.push("/transactions/" + item.id)}
                     >
                       {item.accountnumber}
                     </TableCell>
                     <TableCell
+                      onClick={() => history.push("/transactions/" + item.id)}
                     >
                       {item.amount}
                     </TableCell>
                     <TableCell
+                      onClick={() => history.push("/transactions/" + item.id)}
                     >
-                      {item.entrytype ==="EF" ? item.narration  + " for " + item.name : item.narration + " for " + item.description}
+                      {item.entrytype === "EF"
+                        ? item.narration + " for " + item.name
+                        : item.narration + " for " + item.description}
                     </TableCell>
                     <TableCell
+                      onClick={() => history.push("/transactions/" + item.id)}
                     >
                       {item.entrytype}
                     </TableCell>
-                        
+
                     <TableCell>
-                    {new Date(item.updated_at).toLocaleDateString()}
+                      {new Date(item.updated_at).toLocaleDateString()}
                     </TableCell>
                   </TableRow>
                 ))}
