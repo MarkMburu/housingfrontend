@@ -10,6 +10,7 @@ const genderItems = [
 const maritalStatusItems = [
   { id: "single", title: "Single" },
   { id: "Married", title: "Married" },
+  { id: "Divorced", title: "Divorced" },
 ];
 
 const accounts = [
@@ -19,7 +20,7 @@ const accounts = [
   { id: "Registered Groups", title: "Registered Groups" },
 ];
 const branchList = [
-  { id: "Ruiru(Main)", title: "Ruiru(Main)" },
+  { id: "Ruiru(Main)", title: "Ruiru(Head Office)" },
   { id: "Malindi", title: "Malindi" },
   { id: "GilGil", title: "GilGil" },
 ];
@@ -28,7 +29,6 @@ const initialFvalues = {
   firstname: "",
   middlename: "",
   surname: "",
-  accountnumber: null,
   name: "",
   nationalid: "",
   krapin: "",
@@ -57,11 +57,6 @@ function PersonalInformationForm(props) {
     }
     if ("surname" in fieldvalues) {
       temp.surname = fieldvalues.surname ? "" : "This Field is required";
-    }
-    if ("accountnumber" in fieldvalues) {
-      temp.accountnumber = fieldvalues.accountnumber
-        ? ""
-        : "This Field is required";
     }
     if ("nationalid" in fieldvalues) {
       temp.nationalid = fieldvalues.nationalid ? "" : "This Field is required";
@@ -157,13 +152,6 @@ function PersonalInformationForm(props) {
         </Grid>
 
         <Grid item xs={4}>
-          <Controls.Input
-            label="Member Number"
-            name="accountnumber"
-            value={values.accountnumber}
-            onChange={handleInputChange}
-            error={errors.accountnumber}
-          />
           <Controls.Input
             label="Surname"
             name="surname"

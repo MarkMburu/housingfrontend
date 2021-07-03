@@ -18,7 +18,6 @@ const initialFvalues = {
   bankname: "",
   paymentref: "",
   entrytype:"EF",
-  rcptno:null,
   narration:"Entrance Fees",
   status:"POSTED",
  
@@ -75,14 +74,6 @@ function EntranceFeeForm(props) {
     <Form onSubmit={handleSubmit}>
       <Grid container>
         <Grid item xs={6}>
-          <Controls.Input
-            label="Receipt No"
-            name="rcptno"
-            type="number"
-            value={values.rcptno}
-            onChange={handleInputChange}
-            error={errors.accountnumber}
-          />
           <Controls.Input
             label="Amount"
             name="amount"

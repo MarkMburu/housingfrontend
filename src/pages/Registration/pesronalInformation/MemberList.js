@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const headCells = [
   { id: "accounttype", label: "Account Type" },
-  { id: "accountnumber", label: "Member No:" },
+  { id: "accountnumber", label: "Investor No:" },
   { id: "fullname", label: "FullName" },
   { id: "nationalid", label: "ID" },
   { id: "phone", label: "Phone" },

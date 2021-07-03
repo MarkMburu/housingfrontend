@@ -15,12 +15,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ActionCreators } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import LinearIndeterminate from "../../components/LinearIndeterminate";
+import EquityLogo from "../../assets/equitylogo.png";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="#">
         Equity Premier Land Solution
       </Link>{" "}
       {new Date().getFullYear()}
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage: `${EquityLogo}`,
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
