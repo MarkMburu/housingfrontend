@@ -43,6 +43,7 @@ function dateDiffInDays(a, b) {
 function BeneficiaryInformationForm(props) {
   const { addOrEdit, recordForEdit } = props;
   const { memberId } = props;
+  console.log(memberId)
   const validate = (fieldvalues = values) => {
     let temp = { ...errors };
     if ("firstname" in fieldvalues) {

@@ -24,6 +24,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog";
 import { useSelector, useDispatch } from "react-redux";
 import LinearIndeterminate from "../../../components/LinearIndeterminate";
 import { BeneficiaryActions } from "../../../actions/beneficiaryAction";
+import { MemberActions } from "../../../actions/memberActions";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -48,10 +49,16 @@ const headCells = [
 ];
 
 function Beneficiary(props) {
-  const { id } = props;
+  const { id} = props;
   const classes = useStyles();
   const beneficiary = useSelector((state) => state.beneficiary.beneficiary);
- 
+
+  // get member accountnumber
+  const members = useSelector((state) => state.members.members)
+  const {accountnumber} = members.find(member => member.id === id);
+  console.log("account number",accountnumber);
+
+
   const dispatch = useDispatch();
   // const fetchedBeneficiary = Beneficiaryervices.getAllBeneficiary().then(data => data)
   const [records, setRecords] = useState([]);
@@ -76,13 +83,14 @@ function Beneficiary(props) {
 
   // check beneficiaries exist then filter per member id
   
-  const newBeneficiary = beneficiary ? beneficiary.filter(  bn => bn.memberId === id ) : [];
+  const newBeneficiary = beneficiary ? beneficiary.filter(  bn => bn.memberId === accountnumber ) : [];
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(newBeneficiary, headCells, filterFn, isLoading);
 
   useEffect(() => {
     dispatch(BeneficiaryActions.getBeneficiaries());
+    dispatch(MemberActions.getMembers());
   }, [notify]);
 
   const addOrEdit = (beneficiary, resetForm) => {
@@ -168,7 +176,7 @@ function Beneficiary(props) {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow key={item._id}>
+                  <TableRow key={item.id}>
                     <TableCell>
                       {item.firstname +
                         " " +
@@ -226,7 +234,7 @@ function Beneficiary(props) {
         <BeneficiaryInformationForm
           addOrEdit={addOrEdit}
           recordForEdit={recordForEdit}
-          memberId={id}
+          memberId={accountnumber}
         />
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />
