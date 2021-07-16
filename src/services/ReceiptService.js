@@ -4,6 +4,7 @@ import { headers } from "../constants/headers";
 
 export const insertReceipt = async (values) => {
   try {
+    console.log("response from Receipt services",JSON.stringify({ ...values }));
     const response = await axios.post(
       `${uri}/receipt`,
       JSON.stringify({ ...values }),

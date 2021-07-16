@@ -92,7 +92,7 @@ export class PdfReceipt extends Component {
                   P.O Box  :
                 </i>
             <div style={{display:"flex",flexDirection:"column",}}>
-                  <strong style={{paddingLeft:"30px"}}> {receipt.address || "N/A"} </strong>
+                  <strong style={{paddingLeft:"30px"}}> {receipt.estate || "N/A"} </strong>
                   <strong style={{color:"red"}}>................................................................................</strong>
                 </div>
                 </div>
@@ -180,7 +180,7 @@ export class PdfReceipt extends Component {
                            borderCollapse: "collapse",
                          }}
                        >
-                         {receipt.entrytype == "EF" ? receipt.narration +" for "+ receipt.name: receipt.narration +" "+ receipt.description}
+                         {receipt.description }
                        </td>
                        <td
                          style={{

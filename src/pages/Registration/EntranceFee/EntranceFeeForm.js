@@ -18,7 +18,7 @@ const initialFvalues = {
   bankname: "",
   paymentref: "",
   entrytype:"EF",
-  narration:"Entrance Fees",
+  narration:"",
   status:"POSTED",
  
 };
@@ -29,9 +29,10 @@ function EntranceFeeForm(props) {
   const { memberId } = props;
   const members = useSelector(state => state.members.members);
   const dispatch = useDispatch()
-  const member = members.find(member => member.id === memberId);
+  const member = members.find(member => member.accountnumber === memberId);
   console.log("member........",member);
-  const {name,contact,accountnumber,nationalid} = member;
+  const {name,contact,accountnumber,nationalid,estate,krapin} = member;
+  let description = `Entrance fees for ${name}`;
 
   const validate = (fieldvalues = values) => {
     let temp = { ...errors };
@@ -66,8 +67,8 @@ function EntranceFeeForm(props) {
     e.preventDefault();
     if (validate()) {
       let balance = 1000 - values.amount;
-      console.log({ ...values, memberId,name,contact,accountnumber,nationalid,balance }, "values");
-      addOrEdit({ ...values, memberId,name,contact,accountnumber,nationalid,balance}, resetForm);
+      console.log({ ...values, memberId,name,contact,description,estate,accountnumber,krapin,nationalid,balance }, "values");
+      addOrEdit({ ...values, memberId,name,contact,description,estate,accountnumber,krapin,nationalid,balance }, resetForm);
     }
   };
   return (
@@ -90,6 +91,13 @@ function EntranceFeeForm(props) {
             onChange={handleInputChange}
             error={errors.accountnumber}
           />
+            <Controls.Input
+            label="Narration"
+            name="narration"
+            value={values.narration}
+            onChange={handleInputChange}
+            error={errors.accountnumber}
+          />
         </Grid>
 
         <Grid item xs={6}>
@@ -109,12 +117,11 @@ function EntranceFeeForm(props) {
             onChange={handleInputChange}
             error={errors.accountnumber}
           />
-          <Controls.Input
-            label="Narration"
-            name="narration"
-            value={values.narration}
+             <Controls.DatePickers
+            name="datecaptured"
+            label="Date Captured"
+            value={values.datecaptured}
             onChange={handleInputChange}
-            error={errors.accountnumber}
           />
         </Grid>
       </Grid>

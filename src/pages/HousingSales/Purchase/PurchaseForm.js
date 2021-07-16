@@ -2,59 +2,49 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "../../../components/useForm";
 import { Grid, Typography } from "@material-ui/core";
 import { Controls } from "../../../components/controls/Controls";
-import {useSelector,useDispatch} from "react-redux";
-import {MemberActions} from "../../../actions/memberActions";
-import {HousingActions } from "../../../actions/housingActions";
-import {HouseActions} from "../../../actions/houseActions";
-import {receiptActions} from "../../../actions/receiptActions";
+import { useSelector, useDispatch } from "react-redux";
+import { MemberActions } from "../../../actions/memberActions";
+import { HousingActions } from "../../../actions/housingActions";
+import { HouseActions } from "../../../actions/houseActions";
+import { receiptActions } from "../../../actions/receiptActions";
 
-const accountnumberDebits =[
-    {id:"cash",title:"Cash"},
-    {id:"mpesa",title:"Mpesa"},
-    {id:"equity",title:"Equity Bank"},
-    {id:"dtb",title:"DTB Bank"}
-  ]
+const accountnumberDebits = [
+  { id: "cash", title: "Cash" },
+  { id: "mpesa", title: "Mpesa" },
+  { id: "equity", title: "Equity Bank" },
+  { id: "dtb", title: "DTB Bank" },
+];
 
 const initialFvalues = {
   memberId: "",
-  projectId:"",
-  name:"",
-  nationalid:"",
-  houseId:"",
-  projectname:"",
-  housenumber:"",
-  numberofbedrooms:"",
+  projectId: "",
+  name: "",
+  nationalid: "",
+  houseId: "",
+  projectname: "",
+  housenumber: "",
+
   amount: null,
-  price:null,
+  price: null,
   datecaptured: new Date(),
   bankname: "",
   paymentref: "",
-  entrytype:"NS",
-  rcptno:null,
-  narration:"Purchase Of ",
-  status:"POSTED",
-  amount:null,
-  installments:null,
-  description:"",
-  installamount:null,
-  datecaptured: new Date(),
-  
+  entrytype: "NS",
+  narration: " ",
+  status: "POSTED",
+  amount: null,
+  description: "",
 };
-
 
 function PurchaseForm(props) {
   const { addOrEdit, recordForEdit } = props;
   const { projectId } = props;
-  const memberList = useSelector(state => state.members.members);
-  const housing = useSelector(state => state.houses.houses)
-  const house = useSelector(state => state.house.house);
- 
+  const memberList = useSelector((state) => state.members.members);
+  const housing = useSelector((state) => state.houses.houses);
+  const house = useSelector((state) => state.house.house);
 
-  console.log("housee",house);
-   console.log("housing",housing)
- console.log("member",memberList);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const validate = (fieldvalues = values) => {
     let temp = { ...errors };
     if ("firstname" in fieldvalues) {
@@ -73,28 +63,37 @@ function PurchaseForm(props) {
   };
   const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFvalues, true, validate);
-    const selectedproject = housing && values.projectId !== "" ? housing.find(p => p.id === values.projectId) : "";
-    const member = memberList && values.memberId !== "" ?  memberList.find(member => member.id === values.memberId) : "";
-    const houses = house.filter(housing => housing.projectId === values.projectId);
-    const houseSale = houses && values.houseId !== "" ? houses.find(house => house.id === values.houseId):"";
-     console.log("Houses",houses)
+  const selectedproject =
+    housing && values.projectId !== ""
+      ? housing.find((p) => p.id === values.projectId)
+      : "";
+  const member =
+    memberList && values.memberId !== ""
+      ? memberList.find((member) => member.id === values.memberId)
+      : "";
+      console.log("member",member)
+  const houses = house.filter(
+    (housing) => housing.projectId === values.projectId
+  );
+  const houseSale =
+    houses && values.houseId !== ""
+      ? houses.find((house) => house.id === values.houseId)
+      : "";
+  console.log("Houses", houses);
+  const { name, contact, accountnumber, nationalid, estate, krapin } = member;
 
-    values.name = member.name || "";
-    values.contact = member.phone || "";
-    values.nationalid = member.nationalid||"";
-    values.accountnumber = member.accountnumber||"";
-    values.projectname = selectedproject.projectname ||"";  
-    values.price = houseSale.price ||"";
-    values.housenumber = houseSale.housenumber || "";
-    values.numberofbedrooms = houseSale.numberofbedrooms || "";
-    values.price = houseSale.price || "";
-    values.balance = values.price - values.amount;
-    values.installamount = values.price / values.installments;
-    values.description = values.projectname +" House no: " + values.housenumber 
+  values.projectname = selectedproject.projectname || "";
+  values.price = houseSale.price || "";
+  values.name = name || "";
+  values.accountnumber = accountnumber || "";
+  values.nationalid = nationalid || "";
+  values.housenumber = houseSale.housenumber || "";
+  values.balance = values.price - values.amount;
+  let description = "Purchase of " + values.projectname + " House no: " + values.housenumber;
   useEffect(() => {
     dispatch(MemberActions.getMembers());
     dispatch(HousingActions.getHouseProjects());
-    dispatch(HouseActions.getHouse())
+    dispatch(HouseActions.getHouse());
     if (recordForEdit !== null)
       setValues({
         ...recordForEdit,
@@ -103,13 +102,70 @@ function PurchaseForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    values.memberId = accountnumber;
     if (validate()) {
-      const {memberId,houseProjectId:projectId,description,houseId,name,contact,accountnumber,nationalid,balance,amount,datecaptured,bankname,paymentref,entrytype,rcptno,narration,status} = values
-      const receipt = {memberId,name,contact,description,accountnumber,nationalid,balance,amount,datecaptured,bankname,paymentref,entrytype,rcptno,narration,status};
-      dispatch(receiptActions.addReceipt(receipt))  
-      dispatch(HouseActions.updateHouse({...houseSale,memberId,sold:true}))    
-      addOrEdit({ ...values, memberId,name,contact,accountnumber,nationalid,balance}, resetForm);
-      addOrEdit({ ...values, projectId }, resetForm);
+      const {
+        memberId,
+        accountnumber,
+        houseProjectId: projectId,
+        houseId,
+        balance,
+        amount,
+        datecaptured,
+        bankname,
+        paymentref,
+        entrytype,
+        narration,
+        status,
+      } = values;
+      console.log({
+          ...values,
+          memberId,
+          accountnumber,
+          houseProjectId: projectId,
+          description,
+          houseId,
+          name,
+          contact,
+          accountnumber,
+          nationalid,
+          balance,
+          amount,
+          datecaptured,
+          bankname,
+          paymentref,
+          entrytype,
+          narration,
+          status,
+          estate, 
+          krapin
+      })
+      addOrEdit(
+        {
+          ...values,
+          memberId: accountnumber,
+          houseProjectId: projectId,
+          description,
+          houseId,
+          name,
+          contact,
+          accountnumber,
+          nationalid,
+          balance,
+          amount,
+          datecaptured,
+          bankname,
+          paymentref,
+          entrytype,
+          narration,
+          status,
+          estate, 
+          krapin
+       
+        },
+        resetForm
+      );
+      // addOrEdit({ ...values, projectId }, resetForm);
     }
   };
   return (
@@ -126,7 +182,6 @@ function PurchaseForm(props) {
             error={errors._id}
           />
 
-         
           <Controls.HouseSelect
             name="projectId"
             label="Choose Project"
@@ -144,25 +199,8 @@ function PurchaseForm(props) {
             onChange={handleInputChange}
             error={errors.accountnumber}
           />
-           <Controls.Input
-            label="Receipt No"
-            name="rcptno"
-            type="number"
-            value={values.rcptno}
-            onChange={handleInputChange}
-            error={errors.accountnumber}
-          />
-          <Controls.Input
-            label="Installments"
-            name="installments"
-            type="number"
-            value={values.intallments}
-            onChange={handleInputChange}
-            error={errors.accountnumber}
-          />
-          
 
-        <Controls.Input
+          <Controls.Input
             label="Balance"
             name="balance"
             type="number"
@@ -170,7 +208,12 @@ function PurchaseForm(props) {
             onChange={handleInputChange}
             error={errors.accountnumber}
           />
-          
+          <Controls.DatePickers
+            name="datecaptured"
+            label="Date Captured"
+            value={values.datecaptured}
+            onChange={handleInputChange}
+          />
         </Grid>
 
         <Grid item xs={4}>
@@ -181,14 +224,14 @@ function PurchaseForm(props) {
             onChange={handleInputChange}
             error={errors.firstname}
           />
-         <Controls.Input
+          <Controls.Input
             label="accountnumber Number"
             name="accountnumber"
             value={values.accountnumber}
             onChange={handleInputChange}
             error={errors.firstname}
           />
-           <Controls.Input
+          <Controls.Input
             label="Project Name"
             name="projectname"
             value={values.projectname}
@@ -204,14 +247,7 @@ function PurchaseForm(props) {
             key={accountnumberDebits.id}
             error={errors._id}
           />
-           <Controls.Input
-            label="Equal Installments"
-            name="installamount"
-            type="number"
-            value={values.installamount}
-            onChange={handleInputChange}
-            error={errors.accountnumber}
-          />
+
           <Controls.Input
             label="Payment Ref"
             name="paymentref"
@@ -222,7 +258,7 @@ function PurchaseForm(props) {
         </Grid>
 
         <Grid item xs={4}>
-        <Controls.Input
+          <Controls.Input
             label="Id"
             name="nationalid"
             value={values.nationalid}
@@ -238,13 +274,13 @@ function PurchaseForm(props) {
             onChange={handleInputChange}
             error={errors.firstname}
           />
-           <Controls.Input
+          {/* <Controls.Input
             label="Plot Number"
             name="numberofbedrooms"
             value={values.numberofbedrooms}
             onChange={handleInputChange}
             error={errors.firstname}
-          />
+          /> */}
           <Controls.Input
             label="Amount"
             name="amount"
@@ -253,19 +289,11 @@ function PurchaseForm(props) {
             onChange={handleInputChange}
             error={errors.accountnumber}
           />
-          
+
           <Controls.Input
             label="Narration"
             name="narration"
             value={values.narration}
-            onChange={handleInputChange}
-            error={errors.accountnumber}
-          />
-
-<Controls.Input
-            label="Description"
-            name="description"
-            value={values.description}
             onChange={handleInputChange}
             error={errors.accountnumber}
           />

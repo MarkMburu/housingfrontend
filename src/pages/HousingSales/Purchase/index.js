@@ -23,7 +23,7 @@ import Notification from "../../../components/Notification";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import { useSelector, useDispatch } from "react-redux";
 import LinearIndeterminate from "../../../components/LinearIndeterminate";
-import { PurchaseActions } from "../../../actions/purchaseActions";
+import { receiptActions } from "../../../actions/receiptActions";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -49,9 +49,8 @@ const headCells = [
 ];
 
 function Purchase(props) {
-  const { id } = props;
   const classes = useStyles();
-  const purchases = useSelector((state) => state.purchases.purchases);
+  const receipts = useSelector((state) => state.receipts.receipts);
  
   const dispatch = useDispatch();
   // const fetchedPurchase = Purchaseervices.getAllPurchase().then(data => data)
@@ -77,21 +76,21 @@ function Purchase(props) {
 
   // check beneficiaries exist then filter per member id
   
-  const newPurchase = purchases ? purchases.filter(  bn => bn.projectId === id ) : [];
+  const newPurchase = receipts ? receipts.filter( bn => bn.houseId !== null ) : [];
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(newPurchase, headCells, filterFn, isLoading);
+    useTable(newPurchase ? newPurchase : [], headCells, filterFn, isLoading);
 
   useEffect(() => {
-    dispatch(PurchaseActions.getPurchases());
+    dispatch(receiptActions.getReceipts());;
   }, [notify]);
 
   const addOrEdit = (Purchase, resetForm) => {
     if (Purchase.id) {
       console.log(Purchase);
-      dispatch(PurchaseActions.updatePurchase(Purchase));
+      dispatch(receiptActions.updateReceipt(Purchase));;
     } else {
-      dispatch(PurchaseActions.addPurchase(Purchase));
+      dispatch(receiptActions.addReceipt(Purchase));
     }
 
     resetForm();
@@ -127,7 +126,7 @@ function Purchase(props) {
       isOpen: false,
     });
     console.log("delete");
-    dispatch(PurchaseActions.deletePurchase(id));
+    dispatch( dispatch(receiptActions.deleteReceipt(id)));
     setNotify({
       isOpen: true,
       message: "Deleted Successfully",
@@ -163,7 +162,7 @@ function Purchase(props) {
             }}
           />
         </Toolbar>
-        {purchases && purchases.length > 0 ? (
+        {receipts && receipts.length > 0 ? (
           <div>
             <TblContainer>
               <TblHead />
@@ -171,13 +170,12 @@ function Purchase(props) {
                 {recordsAfterPagingAndSorting().map((item) => (
                   <TableRow key={item._id}>
                     <TableCell>
-                      {item.Purchasename}
+                      {item.rcptno}
                     </TableCell>
-                    <TableCell>{item.size +" Acres"}</TableCell>
-                    <TableCell>{item.numberofplots}</TableCell>
-                    <TableCell>{item.costprice}</TableCell>
-                    <TableCell>{item.installments}</TableCell>
-                    <TableCell>{item.costprice / item.installments}</TableCell>
+                    <TableCell>{item.narration}</TableCell>
+                    <TableCell>{item.datecaptured}</TableCell>
+                    <TableCell>{item.price}</TableCell>
+                    <TableCell>{item.balance}</TableCell>
                     <TableCell>
                       <Controls.ActionButton
                         color="primary"
@@ -222,7 +220,7 @@ function Purchase(props) {
         <PurchaseForm
           addOrEdit={addOrEdit}
           recordForEdit={recordForEdit}
-          projectId={id}
+         
         />
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />

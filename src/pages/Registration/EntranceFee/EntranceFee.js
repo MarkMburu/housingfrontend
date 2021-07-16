@@ -24,6 +24,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog";
 import { useSelector, useDispatch } from "react-redux";
 import LinearIndeterminate from "../../../components/LinearIndeterminate";
 import { receiptActions } from "../../../actions/receiptActions";
+import { MemberActions } from "../../../actions/memberActions";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -51,8 +52,14 @@ function EntranceFee(props) {
   const { id } = props;
   const classes = useStyles();
   const receipts = useSelector((state) => state.receipts.receipts);
-  console.log(receipts)
+  console.log(receipts);
   const dispatch = useDispatch();
+
+  // get member accountnumber
+  const members = useSelector((state) => state.members.members);
+  const { accountnumber } = members.find((member) => member.id === id);
+  console.log("account number", accountnumber);
+
   // const fetchedEntranceFee = EntranceFeeervices.getAllEntranceFee().then(data => data)
   const [records, setRecords] = useState([]);
   const [notify, setNotify] = useState({
@@ -73,13 +80,16 @@ function EntranceFee(props) {
     title: "",
     subTitle: "",
   });
-  const memberReceipt = receipts ? receipts.filter(receipt => receipt.memberId === id) : [];
-  console.log("member Receipt", memberReceipt)
+  const memberReceipt = receipts
+    ? receipts.filter((receipt) => receipt.memberId ===accountnumber)
+    : [];
+  console.log("member Receipt", memberReceipt);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(memberReceipt, headCells, filterFn, isLoading);
 
   useEffect(() => {
     dispatch(receiptActions.getReceipts());
+    dispatch(MemberActions.getMembers());
   }, [notify]);
 
   const addOrEdit = (receipt, resetForm) => {
@@ -123,7 +133,7 @@ function EntranceFee(props) {
       isOpen: false,
     });
     console.log("delete");
-    dispatch(receiptActions.addreceipt(id));
+    dispatch(receiptActions.deleteReceipt(id));
     setNotify({
       isOpen: true,
       message: "Deleted Successfully",
@@ -165,9 +175,8 @@ function EntranceFee(props) {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-               
                   <TableRow key={item.id}>
-                      <TableCell>{item.rcptno}</TableCell>
+                    <TableCell>{item.rcptno}</TableCell>
                     <TableCell>{item.bankname}</TableCell>
                     <TableCell>{item.amount}</TableCell>
                     <TableCell>{item.balance}</TableCell>
@@ -215,7 +224,11 @@ function EntranceFee(props) {
         setOpenPopup={setOpenPopup}
         title="Entrance Fee Form"
       >
-        <EntranceFeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} memberId={id} />
+        <EntranceFeeForm
+          addOrEdit={addOrEdit}
+          recordForEdit={recordForEdit}
+          memberId={accountnumber}
+        />
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog

@@ -186,9 +186,7 @@ function Receipt(props) {
                     <TableCell
                       onClick={() => history.push("/transactions/" + item.id)}
                     >
-                      {item.entrytype === "EF"
-                        ? item.narration + " for " + item.name
-                        : item.narration + " for " + item.description}
+                      {item.description}
                     </TableCell>
                     <TableCell
                       onClick={() => history.push("/transactions/" + item.id)}
