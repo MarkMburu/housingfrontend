@@ -44,7 +44,7 @@ const headCells = [
   { id: "acDebit", label: "AC/Debit" },
   { id: "amount", label: "Amount" },
   { id: "balance", label: "Balance" },
-  { id: "updatedat", label: "updated _at" },
+  { id: "datecaptured", label: "Date Captured" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
 
@@ -81,7 +81,7 @@ function EntranceFee(props) {
     subTitle: "",
   });
   const memberReceipt = receipts
-    ? receipts.filter((receipt) => receipt.memberId ===accountnumber)
+    ? receipts.filter((receipt) => receipt.memberId ===accountnumber && receipt.entrytype === "EF")
     : [];
   console.log("member Receipt", memberReceipt);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
@@ -178,10 +178,10 @@ function EntranceFee(props) {
                   <TableRow key={item.id}>
                     <TableCell>{item.rcptno}</TableCell>
                     <TableCell>{item.bankname}</TableCell>
-                    <TableCell>{item.amount}</TableCell>
-                    <TableCell>{item.balance}</TableCell>
+                    <TableCell>{(item.amount).toLocaleString('en-US', {style: 'currency',currency: 'KSH',}) || "N/A"}</TableCell>
+                    <TableCell>{(item.balance).toLocaleString('en-US', {style: 'currency',currency: 'KSH',}) || "N/A"}</TableCell>
                     <TableCell>
-                      {new Date(item.updated_at).toLocaleDateString()}
+                      {new Date(item.datecaptured).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
                       <Controls.ActionButton

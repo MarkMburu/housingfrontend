@@ -114,7 +114,7 @@ export class PdfReceipt extends Component {
                   The Sum of Kenya Shillings : 
                 </i>
             <div style={{display:"flex",flexDirection:"column",}}>
-                  <strong style={{paddingLeft:"30px"}}> {receipt.amount || "N/A"} </strong>
+                  <strong style={{paddingLeft:"30px"}}> { (receipt.amount).toLocaleString('en-US', {style: 'currency',currency: 'KSH',}) || "N/A"} </strong>
                   <strong style={{color:"red"}}> ..........................................................................................................................</strong>
                 </div>
                 </div>
@@ -188,7 +188,7 @@ export class PdfReceipt extends Component {
                           borderCollapse: "collapse",
                          }}
                      >
-                        {receipt.amount}
+                        { (receipt.amount).toLocaleString('en-US', {style: 'currency',currency: 'KSH',}) || "N/A"}
                      </td>
                   </tr>
                      <tr>
@@ -209,7 +209,7 @@ export class PdfReceipt extends Component {
                         borderCollapse: "collapse",
                        }}
                        >
-                       {receipt.amount}
+                       { (receipt.amount).toLocaleString('en-US', {style: 'currency',currency: 'KSH',}) || "N/A"}
                     </td>
                    </tr>
                    </tbody>

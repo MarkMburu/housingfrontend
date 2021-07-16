@@ -11,6 +11,8 @@ import PhaseSelect from "./PhaseSelect"
 import PlotSelect from "./PlotSelect";
 import HouseSelect from "./HouseSelect";
 import FloorSelect from "./FloorSelect";
+import MemberSelect from "./MemberSelect";
+
 export const Controls ={
    Input,
    RadioGroup,
@@ -24,5 +26,7 @@ export const Controls ={
    PhaseSelect,
    PlotSelect,
    HouseSelect,
-   FloorSelect
+   FloorSelect,
+   MemberSelect
+
 }

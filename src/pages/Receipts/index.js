@@ -181,7 +181,7 @@ function Receipt(props) {
                     <TableCell
                       onClick={() => history.push("/transactions/" + item.id)}
                     >
-                      {item.amount}
+                      { (item.amount).toLocaleString('en-US', {style: 'currency',currency: 'KSH',}) || "N/A"}
                     </TableCell>
                     <TableCell
                       onClick={() => history.push("/transactions/" + item.id)}
@@ -195,7 +195,7 @@ function Receipt(props) {
                     </TableCell>
 
                     <TableCell>
-                      {new Date(item.updated_at).toLocaleDateString()}
+                      {new Date(item.datecaptured).toLocaleDateString()}
                     </TableCell>
                   </TableRow>
                 ))}

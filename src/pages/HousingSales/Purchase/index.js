@@ -39,12 +39,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const headCells = [
-  { id: "Purchasename", label: "Purchase Name" },
-  { id: "size", label: "Size" },
-  { id: "numberofplots", label: "No. Plots" },
+  { id: "rcptno", label: "rcptno" },
+  { id: "size", label: "Particulars" },
+  { id: "datecaptured", label: "Date Captured" },
   { id: "costprice", label: "Cost Price" },
-  { id: "installments", label: "Installments" },
-  { id: "price", label: "price" },
+  { id: "amount", label: "Amount Paid" },
+  { id: "price", label: "Balance" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
 
@@ -172,10 +172,11 @@ function Purchase(props) {
                     <TableCell>
                       {item.rcptno}
                     </TableCell>
-                    <TableCell>{item.narration}</TableCell>
-                    <TableCell>{item.datecaptured}</TableCell>
-                    <TableCell>{item.price}</TableCell>
-                    <TableCell>{item.balance}</TableCell>
+                    <TableCell>{item.description}</TableCell>
+                    <TableCell>{new Date(item.datecaptured).toLocaleDateString()}</TableCell>
+                    <TableCell>{(item.price).toLocaleString('en-US', {style: 'currency',currency: 'KSH',})}</TableCell>
+                    <TableCell>{(item.amount).toLocaleString('en-US', {style: 'currency',currency: 'KSH',})}</TableCell>
+                    <TableCell>{(item.balance).toLocaleString('en-US', {style: 'currency',currency: 'KSH',})}</TableCell>
                     <TableCell>
                       <Controls.ActionButton
                         color="primary"

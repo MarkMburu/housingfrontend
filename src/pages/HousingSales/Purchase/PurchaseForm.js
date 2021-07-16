@@ -23,7 +23,6 @@ const initialFvalues = {
   houseId: "",
   projectname: "",
   housenumber: "",
-
   amount: null,
   price: null,
   datecaptured: new Date(),
@@ -38,7 +37,7 @@ const initialFvalues = {
 
 function PurchaseForm(props) {
   const { addOrEdit, recordForEdit } = props;
-  const { projectId } = props;
+
   const memberList = useSelector((state) => state.members.members);
   const housing = useSelector((state) => state.houses.houses);
   const house = useSelector((state) => state.house.house);
@@ -69,7 +68,7 @@ function PurchaseForm(props) {
       : "";
   const member =
     memberList && values.memberId !== ""
-      ? memberList.find((member) => member.id === values.memberId)
+      ? memberList.find((member) => member.accountnumber === values.memberId)
       : "";
       console.log("member",member)
   const houses = house.filter(
@@ -102,7 +101,6 @@ function PurchaseForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    values.memberId = accountnumber;
     if (validate()) {
       const {
         memberId,
@@ -127,7 +125,6 @@ function PurchaseForm(props) {
           houseId,
           name,
           contact,
-          accountnumber,
           nationalid,
           balance,
           amount,
@@ -143,13 +140,13 @@ function PurchaseForm(props) {
       addOrEdit(
         {
           ...values,
-          memberId: accountnumber,
+          memberId,
+          accountnumber,
           houseProjectId: projectId,
           description,
           houseId,
           name,
           contact,
-          accountnumber,
           nationalid,
           balance,
           amount,
@@ -172,7 +169,7 @@ function PurchaseForm(props) {
     <Form onSubmit={handleSubmit}>
       <Grid container>
         <Grid item xs={4}>
-          <Controls.UnitSelect
+          <Controls.MemberSelect
             name="memberId"
             label="Select Member"
             value={values.memberid}
