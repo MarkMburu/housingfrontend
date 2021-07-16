@@ -117,10 +117,8 @@ function PurchaseForm(props) {
         status,
       } = values;
       console.log({
-          ...values,
           memberId,
           accountnumber,
-          houseProjectId: projectId,
           description,
           houseId,
           name,
@@ -139,7 +137,7 @@ function PurchaseForm(props) {
       })
       addOrEdit(
         {
-          ...values,
+          // ...values,
           memberId,
           accountnumber,
           houseProjectId: projectId,

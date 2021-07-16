@@ -42,7 +42,6 @@ const headCells = [
   { id: "rcptno", label: "rcptno" },
   { id: "size", label: "Particulars" },
   { id: "datecaptured", label: "Date Captured" },
-  { id: "costprice", label: "Cost Price" },
   { id: "amount", label: "Amount Paid" },
   { id: "price", label: "Balance" },
   { id: "actions", label: "Actions", disableSorting: true },
@@ -168,13 +167,12 @@ function Purchase(props) {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow key={item._id}>
+                  <TableRow key={item.id}>
                     <TableCell>
                       {item.rcptno}
                     </TableCell>
                     <TableCell>{item.description}</TableCell>
                     <TableCell>{new Date(item.datecaptured).toLocaleDateString()}</TableCell>
-                    <TableCell>{(item.price).toLocaleString('en-US', {style: 'currency',currency: 'KSH',})}</TableCell>
                     <TableCell>{(item.amount).toLocaleString('en-US', {style: 'currency',currency: 'KSH',})}</TableCell>
                     <TableCell>{(item.balance).toLocaleString('en-US', {style: 'currency',currency: 'KSH',})}</TableCell>
                     <TableCell>
