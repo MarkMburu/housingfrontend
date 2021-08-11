@@ -212,6 +212,27 @@ export class PdfReceipt extends Component {
                        { (receipt.amount).toLocaleString('en-US', {style: 'currency',currency: 'KSH',}) || "N/A"}
                     </td>
                    </tr>
+                   <tr>
+                       <td
+                         style={{
+                         border: "2px solid black",
+                           borderCollapse: "collapse",
+                           textAlign:"center",
+                          fontSize:"22px"
+                        }}
+                      
+                       >
+                      Balance
+                     </td>
+                       <td
+                     style={{
+                       border: "2px solid black",
+                        borderCollapse: "collapse",
+                       }}
+                       >
+                       { (receipt.balance).toLocaleString('en-US', {style: 'currency',currency: 'KSH',}) || "N/A"}
+                    </td>
+                   </tr>
                    </tbody>
                  </table>
                   </div>

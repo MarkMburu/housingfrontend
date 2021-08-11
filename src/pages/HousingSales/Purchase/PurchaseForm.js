@@ -33,6 +33,7 @@ const initialFvalues = {
   status: "POSTED",
   amount: null,
   description: "",
+  dateofpayment: new Date()
 };
 
 function PurchaseForm(props) {
@@ -242,13 +243,11 @@ function PurchaseForm(props) {
             key={accountnumberDebits.id}
             error={errors._id}
           />
-
-          <Controls.Input
-            label="Payment Ref"
-            name="paymentref"
-            value={values.paymentref}
+             <Controls.DatePickers
+            name="dateofpayment"
+            label="Date Of Payment"
+            value={values.dateofpayment}
             onChange={handleInputChange}
-            error={errors.accountnumber}
           />
         </Grid>
 
@@ -269,13 +268,7 @@ function PurchaseForm(props) {
             onChange={handleInputChange}
             error={errors.firstname}
           />
-          {/* <Controls.Input
-            label="Plot Number"
-            name="numberofbedrooms"
-            value={values.numberofbedrooms}
-            onChange={handleInputChange}
-            error={errors.firstname}
-          /> */}
+       
           <Controls.Input
             label="Amount"
             name="amount"
@@ -289,6 +282,13 @@ function PurchaseForm(props) {
             label="Narration"
             name="narration"
             value={values.narration}
+            onChange={handleInputChange}
+            error={errors.accountnumber}
+          />
+            <Controls.Input
+            label="Payment Ref"
+            name="paymentref"
+            value={values.paymentref}
             onChange={handleInputChange}
             error={errors.accountnumber}
           />
